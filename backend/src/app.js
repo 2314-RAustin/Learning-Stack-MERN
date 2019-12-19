@@ -10,8 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
-app.get('/api/users', (req, res) => res.send('Users Users'));
-app.get('/api/notes', (req, res) => res.send('Users Notes'));
-app.get('/api/', (req, res) => res.send('Users Default'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/notes', require('./routes/notes'));
 
 module.exports = app;
