@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const URI = process.env.MONGODB_URI ?rocess.env.MONGODB_URI:'mongodb://localhost/mernstack';
+const URI = process.env.MONGODB_URI?process.env.MONGODB_URI:'mongodb://localhost/mernstack';
 console.log(URI)
 
 mongoose.connect(URI, {
