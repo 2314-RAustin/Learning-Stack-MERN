@@ -5,20 +5,37 @@ export default class CreateUser extends Component {
 
     state = {
         users:[],
-        username:''
+        username: ''
     }
 
-    async componentDidMount()
-    {
+     componentDidMount = async () =>{
         const res = await axios.get('http://localhost:4000/api/users');
         this.setState({users: res.data.users});
         //Pull Request al repositorio de fazt https://github.com/FaztWeb/mern-crud-2019
+        //video 10 https://youtu.be/-LB0N_EO7X0?list=PLo5lAe9kQrwrGPjhhzejCt3JENYf5uDNf
     };
     
-    onChangeUserName = (e) =>{
+    onChangeUserName = (e) => {
         this.setState({username: e.target.value}); 
     }
     
+     onSubmitUserName = async e  => {
+        e.preventDefault();
+        const res = await axios.post('http://localhost:4000/api/users', {
+            username: this.state.username
+        });
+        console.log(res);
+        this.componentDidMount();
+        this.state.username = '';
+        
+    }
+
+    deleteUser = async (id) => {
+        console.log(id);
+        const res = await axios.delete(`http://localhost:4000/api/users/${id}`);
+        console.log(res);
+        this.componentDidMount();
+    }
 
     render() {
         return (
@@ -26,17 +43,26 @@ export default class CreateUser extends Component {
                 <div className="col-md-4">
                     <div className="card card-body">
                         <h3>Create new user</h3>
-                        <form action="">
+                        <form action="" onSubmit={this.onSubmitUserName}>
                             <div className="form-group">
-                                <input type="text" className="form-control" onChange={this.onChangeUserName}/>
+                                <input type="text" className="form-control" value={this.state.username} onChange={this.onChangeUserName}/>
                             </div>
+                            <button type="submit" className="btn btn-primary">
+                                Save
+                            </button>
                         </form>
                     </div>
                 </div>
                 <div className="col-md-8">
                     <ul className="list-group">
                     {
-                        this.state.users.map(user => (<li key={user._id} className="list-group-item list-group-item-action">{user.username}</li>))
+                        this.state.users.map(user => (
+                            <li 
+                                key={user._id} 
+                                onDoubleClick={() => this.deleteUser(user._id)} 
+                                className="list-group-item list-group-item-action">
+                                {user.username}
+                            </li>))
                     }
                     </ul>
                 </div>
