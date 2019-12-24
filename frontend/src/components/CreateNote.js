@@ -3,9 +3,6 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 
-//TODO AL MOMENTO DE HACER EL SUBMIT SIN CAMBIAR EL USER ESTE SE VA VACIO
-
-
 export default class CreateNote extends Component {
 
     state = {
@@ -13,17 +10,29 @@ export default class CreateNote extends Component {
         userSelected: '',
         date: new Date(),
         title:'',
-        description:''
+        content:''
     }
 
     componentDidMount = async () => {
         const res = await axios.get('http://localhost:4000/api/users');
-        this.setState({users: res.data.users.map(user => user.username)});
+        this.setState({
+            users: res.data.users.map(user => user.username), 
+            userSelected: res.data.users[0].username
+        });
     };
 
-    onSubmit = (e) => {
+    onSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.state);
+
+        const newNote = {
+            title: this.state.title,
+            content: this.state.content,
+            date: this.state.date,
+            author: this.state.userSelected
+        };
+
+        const res = await axios.post('http://localhost:4000/api/notes', newNote);
+        window.location.href = '/';
     }
 
     onInputChange = (e) => {
@@ -58,7 +67,7 @@ export default class CreateNote extends Component {
                     </div>
                     {/* INSERT DESCRIPTION TO TASK */}
                     <div className="form-group">
-                        <textarea name="description" className="form-control" onChange={this.onInputChange} required></textarea>
+                        <textarea name="content" className="form-control" onChange={this.onInputChange} required></textarea>
                     </div>
                     {/* INSERT DATE */}
                     <div className="form-group">
