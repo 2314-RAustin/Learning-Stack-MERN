@@ -28,7 +28,7 @@ export default class CreateNote extends Component {
             title: this.state.title,
             content: this.state.content,
             date: this.state.date,
-            author: this.state.userSelected
+            author: this.state.author
         };
 
         const res = await axios.post('http://localhost:4000/api/notes', newNote);
@@ -52,7 +52,7 @@ export default class CreateNote extends Component {
                     <h4>Create a Note</h4>
                     {/* SELECT USER */}
                     <div className="form-group">
-                        <select className="form-control" name="user" onChange={this.onInputChange}>
+                        <select className="form-control" name="author" onChange={this.onInputChange}>
                         {
                             this.state.users.map(user => (
                                 <option key={user} value={user}>
