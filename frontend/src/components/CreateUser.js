@@ -6,7 +6,7 @@ export default class CreateUser extends Component {
     state = {
         users:[],
         username: ''
-    }
+    };
 
      componentDidMount = async () =>{
         const res = await axios.get('http://localhost:4000/api/users');
@@ -17,25 +17,23 @@ export default class CreateUser extends Component {
     
     onChangeUserName = (e) => {
         this.setState({username: e.target.value}); 
-    }
+    };
     
      onSubmitUserName = async e  => {
         e.preventDefault();
-        const res = await axios.post('http://localhost:4000/api/users', {
+        await axios.post('http://localhost:4000/api/users', {
             username: this.state.username
         });
-        console.log(res);
         this.componentDidMount();
         this.state.username = '';
         
-    }
+    };
 
     deleteUser = async (id) => {
         console.log(id);
-        const res = await axios.delete(`http://localhost:4000/api/users/${id}`);
-        console.log(res);
+        await axios.delete(`http://localhost:4000/api/users/${id}`);
         this.componentDidMount();
-    }
+    };
 
     render() {
         return (

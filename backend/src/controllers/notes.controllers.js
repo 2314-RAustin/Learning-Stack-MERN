@@ -2,14 +2,12 @@ const notesCtrl = {};
 
 const Note = require('../models/Note');
 
-notesCtrl.getNotes = async (req, res) =>
-{ 
-    const notes = await Note.find(); 
+notesCtrl.getNotes = async (req, res) => { 
+    const notes = await Note.find();
     res.json({notes});
 };
 
-notesCtrl.createNotes = async (req, res) => 
-{
+notesCtrl.createNotes = async (req, res) => {
     const {title, content, date, author} = req.body;
     const newNote = new Note(
     {
@@ -28,26 +26,24 @@ notesCtrl.updateNotes = (req, res) => res.json({route:'notes routes',request:'pu
 notesCtrl.deleteNotes = (req, res) => res.json({route:'notes routes',request:'delete'});
 notesCtrl.editItemNotes = (req, res) => res.json({route:'notes routes',request:'patch'});
 
-notesCtrl.getNotesID = async (req, res) => 
-{
+notesCtrl.getNotesID = async (req, res) => {
     const note = await Note.findById(req.params.id);
     res.json({note});
 };
 
-notesCtrl.updateNotesID = async (req, res) => 
-{
-    const {title, content, author} = req.body;
+notesCtrl.updateNotesID = async (req, res) => {
+    const {title, content, author, date} = req.body;
     const note = await Note.findOneAndUpdate({_id: req.params.id},
     {
         title,
         content,
-        author
+        author,
+        date
     });
     res.json({note})
 };
 
-notesCtrl.deleteNotesID = async (req, res) => 
-{
+notesCtrl.deleteNotesID = async (req, res) => {
     const note = await Note.findByIdAndDelete(req.params.id); 
     res.json({note})
 };
